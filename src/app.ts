@@ -1,5 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from 'express'
 import morgan from 'morgan'
+import cors from 'cors'
 import fs from 'fs'
 import path from 'path'
 import { connectDB } from "./database";
@@ -21,6 +22,9 @@ export default class App {
     }
 
     public middlewares() {
+        this.app.use(cors({
+            credentials: true
+        }))
         this.app.use(express.json())
         // this.app.use((req: Request, res: Response, next: NextFunction) => {
         //     console.log(req)
