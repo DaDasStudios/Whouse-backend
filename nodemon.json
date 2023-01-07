@@ -1,0 +1,9 @@
+{
+    "execMap": {
+        "ts": "ts-node --files"
+    },
+    "ignore": [
+        ".git"
+    ],
+    "ext": "js,ts,json"
+}
