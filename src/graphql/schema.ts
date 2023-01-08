@@ -1,6 +1,6 @@
 import { GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql'
 import { updateUser, deleteUser, user, users } from './resolvers/user.resolver'
-import { signIn, signUp } from './resolvers/auth.resolver'
+import { signIn, signUp, userToken } from './resolvers/auth.resolver'
 import { submitRate, rates, rate } from './resolvers/rate.resolver'
 import { submitContact, contacts, contact, updateContact, deleteContact } from './resolvers/contact.resolver'
 
@@ -17,6 +17,7 @@ const query = new GraphQLObjectType({
         /* USERS */
         users,
         user,
+        userToken,
         /* CONTACT */
         contacts,
         contact,

@@ -8,6 +8,20 @@ import { JWT_SECRET } from '../../config'
 import { emailRegExp } from '../../util/regExp'
 import { encryptPassword, comparePassword } from '../../util/password'
 import { Request } from 'express'
+import { UserType } from '../types'
+
+export const userToken: GraphQLFieldConfig<any, any> = {
+    type: UserType,
+    description: 'Autorizar el roken deserializando la información',
+    async resolve(_, __, ctx: Request) {
+        try {
+            const userId = isAuthenticated(ctx)
+            return await isAuthorized(userId, ["User", "Admin"])
+        } catch (err: any) {
+            throw new Error(err.message)
+        }
+    }
+}
 
 export const signUp: GraphQLFieldConfig<any, Request, {
     username: string,
