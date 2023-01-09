@@ -107,10 +107,7 @@ export const deleteUser: GraphQLFieldConfig<any, any> = {
                     // * In case it is an Admin, just continue with the updating
                     (roles.some(r => r.name === "Admin"))
                 ) {
-                    return {
-                        username: "usuario encontrado y eliminado"
-                    }
-                    //return await User.findByIdAndDelete(id)
+                    return await User.findByIdAndDelete(id)
                 }
             }
         } catch (err: any) {
