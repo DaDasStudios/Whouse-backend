@@ -91,11 +91,28 @@ export const deleteUser: GraphQLFieldConfig<any, any> = {
         try {
             // ? Check out the permission
             const authenticatedUserId = isAuthenticated(ctx)
-            const isAdmin = await isAuthorized(authenticatedUserId, ["Admin"])
-            if (isAdmin) {
-                return await User.findByIdAndDelete(id)
-            }
+            const isUserOrAdmin = await isAuthorized(authenticatedUserId, ["User", "Admin"])
 
+            if (isUserOrAdmin) {
+                // * Find a user in order to verify if it's an admin or a normal user
+                const foundUser = await User.findById(authenticatedUserId)
+
+                // * Find the user's roles
+                const roles = await Role.find({ _id: { $in: foundUser?.roles } })
+
+                if (
+                    // * In case it is user, the user who is trying to update information must be himself
+                    (roles.some(r => r.name === "User") && foundUser?._id.toString() === id)
+                    ||
+                    // * In case it is an Admin, just continue with the updating
+                    (roles.some(r => r.name === "Admin"))
+                ) {
+                    return {
+                        username: "usuario encontrado y eliminado"
+                    }
+                    //return await User.findByIdAndDelete(id)
+                }
+            }
         } catch (err: any) {
             throw new Error(err.message)
         }
